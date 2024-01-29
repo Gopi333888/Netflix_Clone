@@ -1,16 +1,14 @@
 import 'package:flutter/material.dart';
 
-class MainTittle extends StatelessWidget {
-  const MainTittle({
-    super.key,
-    required this.tittle,
-  });
-  final String tittle;
+class MainTitle extends StatelessWidget {
+  final String title;
+  const MainTitle({super.key, required this.title});
+
   @override
   Widget build(BuildContext context) {
     return Text(
-      tittle,
-      style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+      title,
+      style: const TextStyle(fontSize: 22, fontWeight: FontWeight.w900),
     );
   }
 }

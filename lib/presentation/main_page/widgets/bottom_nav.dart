@@ -1,22 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:netflix/core/colors/colors.dart';
 
-ValueNotifier<int> indexChangedNotifier = ValueNotifier(0);
+ValueNotifier<int> indexChangeNotifier = ValueNotifier(0);
 
-class BottomNavigationBarWidgets extends StatelessWidget {
-  const BottomNavigationBarWidgets({super.key});
+class BottomNavWiget extends StatelessWidget {
+  const BottomNavWiget({super.key});
 
   @override
   Widget build(BuildContext context) {
     return ValueListenableBuilder(
-      valueListenable: indexChangedNotifier,
-      builder: (context, int newIndex, child) {
+      valueListenable: indexChangeNotifier,
+      builder: (context, int newIndex, _) {
         return BottomNavigationBar(
-            currentIndex: newIndex,
             onTap: (index) {
-              indexChangedNotifier.value = index;
+              indexChangeNotifier.value = index;
             },
             elevation: 0,
+            currentIndex: newIndex,
             type: BottomNavigationBarType.fixed,
             backgroundColor: backgroundColor,
             selectedItemColor: Colors.white,
@@ -28,8 +28,7 @@ class BottomNavigationBarWidgets extends StatelessWidget {
               BottomNavigationBarItem(
                   icon: Icon(Icons.collections), label: 'New & Hot'),
               BottomNavigationBarItem(
-                  icon: Icon(Icons.emoji_emotions_rounded),
-                  label: 'Fast Laughs'),
+                  icon: Icon(Icons.emoji_emotions), label: 'First Laugh'),
               BottomNavigationBarItem(
                   icon: Icon(Icons.search), label: 'Search'),
               BottomNavigationBarItem(

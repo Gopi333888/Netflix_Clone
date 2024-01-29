@@ -1,46 +1,47 @@
 import 'package:bordered_text/bordered_text.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:netflix/core/colors/constants.dart';
+import 'package:netflix/core/constants.dart';
 
-class NumbersCard extends StatelessWidget {
-  const NumbersCard({super.key, required this.index});
+class NumberMovieCard extends StatelessWidget {
+  const NumberMovieCard({super.key, required this.index, required this.image});
   final int index;
+  final String image;
+
   @override
   Widget build(BuildContext context) {
     return Stack(
+      alignment: Alignment.bottomLeft,
       children: [
         Row(
           children: [
             const SizedBox(
-              width: 50,
+              width: 40,
               height: 200,
             ),
             Container(
-              width: 140,
+              width: 150,
               height: 200,
               decoration: BoxDecoration(
-                  borderRadius: setRadius,
-                  image: const DecorationImage(
-                      fit: BoxFit.cover,
-                      image: NetworkImage(
-                          'https://media.themoviedb.org/t/p/w300_and_h450_bestv2/mTMAxrRaDp0TFpdFVinD3grrqr9.jpg'))),
+                  borderRadius: kradius10,
+                  image: DecorationImage(
+                      fit: BoxFit.cover, image: NetworkImage(image))),
             ),
           ],
         ),
         Positioned(
-          bottom: -40,
-          left: 10,
+          left: 15,
+          bottom: -20,
           child: BorderedText(
             strokeWidth: 10.0,
             strokeColor: Colors.white,
             child: Text(
-              '${index + 1}',
+              '$index',
               style: GoogleFonts.poppins(
-                  fontWeight: FontWeight.w700,
                   fontSize: 120,
-                  decoration: TextDecoration.none,
-                  color: Colors.black),
+                  fontWeight: FontWeight.w500,
+                  color: Colors.black,
+                  decoration: TextDecoration.none),
             ),
           ),
         )

@@ -1,14 +1,39 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:netflix/core/colors/constants.dart';
-import 'package:netflix/presentation/home/widget/numbers_title_card.dart';
-import 'package:netflix/presentation/widgets/background_card.dart';
-import 'package:netflix/presentation/widgets/main_tittle.dart';
+import 'package:netflix/core/constants.dart';
+import 'package:netflix/infrastructure/functions.dart/movies_functions.dart';
+import 'package:netflix/model/model.dart';
+import 'package:netflix/presentation/home/widgets/custom_button.dart';
+import 'package:netflix/presentation/home/widgets/number_title_card.dart';
+import 'package:netflix/presentation/home/widgets/playbutton.dart';
+import 'package:netflix/presentation/widgets/main_title_card.dart';
 
 ValueNotifier<bool> scrollNotifier = ValueNotifier(true);
 
-class ScreenHome extends StatelessWidget {
+class ScreenHome extends StatefulWidget {
   const ScreenHome({super.key});
+
+  @override
+  State<ScreenHome> createState() => _ScreenHomeState();
+}
+
+class _ScreenHomeState extends State<ScreenHome> {
+  late Future<List<Movie>> trendingMovies;
+  late Future<List<Movie>> horrorMovies;
+  late Future<List<Movie>> comedyMovies;
+  late Future<List<Movie>> actionMovies;
+  late Future<List<Movie>> upComingMovies;
+
+  @override
+  void initState() {
+    trendingMovies = getTrendingMovies();
+    horrorMovies = getHorrorMovies();
+    comedyMovies = getComedyMovies();
+    actionMovies = getActionMovies();
+    upComingMovies = getUpComingMovies();
+
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -30,31 +55,32 @@ class ScreenHome extends StatelessWidget {
             child: Stack(
               children: [
                 ListView(
-                  children: const [
-                    Padding(
-                      padding: EdgeInsets.all(10.0),
-                      child: Column(
-                        children: [
-                          BackGroundCard(),
-                          MainTitleWidgets(
-                            tittile: "Released in the past year",
-                          ),
-                          setHeight,
-                          MainTitleWidgets(
-                            tittile: 'Trending Now',
-                          ),
-                          setHeight,
-                          NumberTitleCard(),
-                          setHeight,
-                          MainTitleWidgets(
-                            tittile: 'Tense Dramas',
-                          ),
-                          setHeight,
-                          MainTitleWidgets(
-                            tittile: 'South Indian Cinema',
-                          )
-                        ],
-                      ),
+                  children: [
+                    Column(
+                      children: [
+                        const HomeBackgroundCard(),
+                        MainTitleCard(
+                          movies: trendingMovies,
+                          title: "Trending Movies",
+                        ),
+                        setHeight,
+                        MainTitleCard(
+                          movies: horrorMovies,
+                          title: 'Horror Movies',
+                        ),
+                        setHeight,
+                        NumberTitleCard(movies: upComingMovies),
+                        setHeight,
+                        MainTitleCard(
+                          movies: comedyMovies,
+                          title: 'Comedy Movies',
+                        ),
+                        setHeight,
+                        MainTitleCard(
+                          movies: actionMovies,
+                          title: 'Action films',
+                        )
+                      ],
                     ),
                   ],
                 ),
@@ -63,7 +89,7 @@ class ScreenHome extends StatelessWidget {
                         duration: const Duration(milliseconds: 6000),
                         width: double.infinity,
                         height: 100,
-                        color: Colors.black.withOpacity(0.5),
+                        color: Colors.black.withOpacity(0.6),
                         child: Column(
                           children: [
                             Row(
@@ -84,12 +110,15 @@ class ScreenHome extends StatelessWidget {
                                 Container(
                                   width: 30,
                                   height: 30,
-                                  color: Colors.blue,
+                                  decoration: const BoxDecoration(
+                                      image: DecorationImage(
+                                          image: NetworkImage(appBarImage),
+                                          fit: BoxFit.cover)),
                                 ),
-                                setWidth,
+                                setHeight,
                               ],
                             ),
-                            setHeight,
+                            setHeight5,
                             const Row(
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
@@ -117,6 +146,41 @@ class ScreenHome extends StatelessWidget {
       ),
     ));
   }
+}
 
-  // ignore: non_constant_identifier_names
+class HomeBackgroundCard extends StatelessWidget {
+  const HomeBackgroundCard({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      children: [
+        Container(
+          width: double.infinity,
+          height: 600,
+          decoration: const BoxDecoration(
+              image: DecorationImage(
+                  image: NetworkImage(kMainImage), fit: BoxFit.cover)),
+        ),
+        const Positioned(
+          bottom: 0,
+          left: 0,
+          right: 0,
+          child: Padding(
+            padding: EdgeInsets.only(bottom: 10),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                CustomIconWithText(icon: Icons.add, text: 'My List '),
+                PlayButton(),
+                CustomIconWithText(icon: Icons.info_outline, text: 'Info'),
+              ],
+            ),
+          ),
+        )
+      ],
+    );
+  }
 }
